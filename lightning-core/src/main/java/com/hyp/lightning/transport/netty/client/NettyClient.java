@@ -1,6 +1,6 @@
 package com.hyp.lightning.transport.netty.client;
 
-import com.hyp.lightning.codec.RpcRequestEncoder;
+import com.hyp.lightning.codec.custom.RpcRequestEncoder;
 import com.hyp.lightning.common.RpcRequest;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;

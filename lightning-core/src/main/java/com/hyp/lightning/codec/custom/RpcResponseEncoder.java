@@ -1,6 +1,5 @@
-package com.hyp.lightning.codec;
+package com.hyp.lightning.codec.custom;
 
-import com.hyp.lightning.common.RpcRequest;
 import com.hyp.lightning.serialize.Hessian2Serialization;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
