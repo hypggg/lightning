@@ -12,8 +12,12 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter{
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        RpcResponse rpcResponse = (RpcResponse)msg;
-        System.out.println(rpcResponse);
+        if(msg instanceof  RpcResponse){
+            RpcResponse rpcResponse = (RpcResponse)msg;
+            System.out.println(rpcResponse.getValue());
+        }else{
+            System.out.println("NettyClientHandler not support msg");
+        }
     }
 
     @Override

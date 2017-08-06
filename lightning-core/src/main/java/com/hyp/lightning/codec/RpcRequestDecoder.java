@@ -18,7 +18,10 @@ public class RpcRequestDecoder extends ByteToMessageDecoder{
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         System.out.println("decode msg ");
-
+        if(in.readableBytes()<13){
+            return;
+        }
+        in.markReaderIndex();
         //读固定长度部分
         long requestId = in.readLong();
         short interfaceLength = in.readShort();
@@ -28,6 +31,9 @@ public class RpcRequestDecoder extends ByteToMessageDecoder{
         paramsLength);
         //读实际内容部分
         int totalLength = interfaceLength+methodLength+paramsLength;
+        if(in.readableBytes()<totalLength){
+            return;
+        }
         ByteBuf interfaceNameBuf = in.readBytes(interfaceLength);
         System.out.println("interfaceName:"+interfaceNameBuf.toString(CharsetUtil.UTF_8));
         ByteBuf methodNameBuf = in.readBytes(methodLength);

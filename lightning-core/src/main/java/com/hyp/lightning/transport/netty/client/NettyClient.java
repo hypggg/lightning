@@ -1,6 +1,7 @@
 package com.hyp.lightning.transport.netty.client;
 
 import com.hyp.lightning.codec.RpcRequestEncoder;
+import com.hyp.lightning.codec.RpcResponseDecoder;
 import com.hyp.lightning.common.RpcRequest;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -23,12 +24,15 @@ public class NettyClient {
         try {
              b = new Bootstrap();
             b.group(workerGroup);
-            b.channel(NioSocketChannel.class) .handler(new LoggingHandler(LogLevel.INFO)).
+            b.channel(NioSocketChannel.class) .
                     handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new RpcRequestEncoder());
+                            ch.pipeline().addLast("logging", new LoggingHandler(LogLevel.INFO));
+
+                            ch.pipeline().addLast(new RpcResponseDecoder());
                             ch.pipeline().addLast(new NettyClientHandler());
+                            ch.pipeline().addLast(new RpcRequestEncoder());
 
                         }
                     });
@@ -38,11 +42,8 @@ public class NettyClient {
             rpcRequest.setInterfaceName("com.hyp.service.A");
             rpcRequest.setMethodName("helloWork");
             rpcRequest.setParams("a,b,112");
-            for(int i=0;i<10;i++){
-                channel.writeAndFlush(rpcRequest);
-            }
-            channel.close();
-//            future.channel().closeFuture().sync();
+            channel.writeAndFlush(rpcRequest);
+            channel.closeFuture().sync();
         } finally {
             workerGroup.shutdownGracefully();
         }
