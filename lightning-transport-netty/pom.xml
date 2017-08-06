@@ -9,8 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>lightning-core</artifactId>
-    <packaging>jar</packaging>
-
+    <artifactId>lightning-transport-netty</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.hyp</groupId>
+            <artifactId>lightning-core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
